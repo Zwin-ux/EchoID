@@ -21,4 +21,122 @@ model Profile {
   hashHex       String?
   updatedAt     DateTime @updatedAt
   createdAt     DateTime @default(now())
+
+  // Gamification fields
+  xp            Int      @default(0)
+  level         Int      @default(1)
+  coins         Int      @default(0)
+  streak        Int      @default(0)
+  lastLoginDate DateTime?
+  theme         String?  @default("default")
+  petType       String?
+  petLevel      Int      @default(1)
+
+  // Relations
+  achievements  Achievement[]
+  questProgress UserQuest[]
+  gameScores    GameScore[]
+  inventory     InventoryItem[]
+  friendsFrom   Friend[]      @relation("UserFriends")
+  friendsTo     Friend[]      @relation("FriendUser")
+
+  @@index([score])
+  @@index([updatedAt])
+  @@index([lastAnchorBlk])
+  @@index([handle])
+  @@index([xp])
+  @@index([level])
+}
+
+model Achievement {
+  id          String   @id @default(cuid())
+  profileId   String
+  badgeType   String
+  rarity      String   @default("common")
+  earnedAt    DateTime @default(now())
+
+  profile     Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId])
+  @@index([badgeType])
+}
+
+model Quest {
+  id          String    @id @default(cuid())
+  type        String
+  title       String
+  description String
+  requirement Json
+  reward      Json
+  icon        String    // NEW: Required for UI display
+  active      Boolean   @default(true)
+  expiresAt   DateTime? // RENAMED from refreshDate to match API code
+  createdAt   DateTime  @default(now()) // NEW: Required for daily quest filtering
+
+  userProgress UserQuest[]
+
+  @@index([type])
+  @@index([active])
+  @@index([createdAt])
+}
+
+model UserQuest {
+  id          String    @id @default(cuid())
+  profileId   String
+  questId     String
+  progress    Int       @default(0)
+  completed   Boolean   @default(false)
+  claimed     Boolean   @default(false) // NEW: Critical for quest claiming
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+
+  profile     Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  quest       Quest    @relation(fields: [questId], references: [id], onDelete: Cascade)
+
+  @@index([profileId])
+  @@index([questId])
+  @@unique([profileId, questId])
+}
+
+model GameScore {
+  id          String   @id @default(cuid())
+  profileId   String
+  game        String
+  score       Int
+  metadata    Json?
+  playedAt    DateTime @default(now())
+
+  profile     Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId])
+  @@index([game, score])
+}
+
+model InventoryItem {
+  id          String   @id @default(cuid())
+  profileId   String
+  itemType    String
+  itemId      String
+  equipped    Boolean  @default(false)
+  purchasedAt DateTime @default(now())
+
+  profile     Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId])
+  @@index([itemType])
+}
+
+model Friend {
+  id          String   @id @default(cuid())
+  userId      String
+  friendId    String
+  status      String   @default("pending")
+  createdAt   DateTime @default(now())
+
+  user        Profile  @relation("UserFriends", fields: [userId], references: [id], onDelete: Cascade)
+  friend      Profile  @relation("FriendUser", fields: [friendId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([friendId])
+  @@unique([userId, friendId])
 }

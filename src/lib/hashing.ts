@@ -1,4 +1,5 @@
 import { createHash } from "crypto";
+import { hashSensitiveData } from "./encryption";
 
 function sortKeys(v: any): any {
   if (Array.isArray(v)) return v.map(sortKeys);
@@ -17,4 +18,10 @@ export function stableStringify(obj: unknown): string {
 
 export function sha256Hex(input: string): string {
   return "0x" + createHash("sha256").update(input).digest("hex");
+}
+
+export function secureHashProfile(profileData: any): string {
+  // Hash sensitive data with encryption
+  const secureData = hashSensitiveData(profileData);
+  return sha256Hex(secureData);
 }

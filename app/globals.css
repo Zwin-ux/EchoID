@@ -1,0 +1,355 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --radius: 0.75rem;
+
+    /* Refined Carnival theme variables */
+    --c-marquee: #DC2626;
+    --c-twist: #F59E0B;
+    --c-cotton: #FEF3C7;
+    --c-night: #0F172A;
+    --c-canvas: #1E293B;
+    --c-cream: #FFFBEB;
+    --c-ink: #1E293B;
+    --c-mint: #10B981;
+    --c-violet: #7C3AED;
+    --c-indigo: #4338CA;
+    --font-heading: "Space Grotesk", system-ui, sans-serif;
+    --font-body: "Inter", system-ui, sans-serif;
+  }
+
+  /* Base typography improvements */
+  body {
+    font-feature-settings: "rlig" 1, "calt" 1;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .font-heading {
+    font-family: var(--font-heading), "Space Grotesk", system-ui, sans-serif;
+  }
+
+  .font-body {
+    font-family: var(--font-body), "Inter", system-ui, sans-serif;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+/* Carnival-specific animations */
+@keyframes marquee-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.95); }
+}
+
+@keyframes tent-sway {
+  0%, 100% { transform: rotate(-1deg); }
+  50% { transform: rotate(1deg); }
+}
+
+@keyframes ticket-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes lights-glow {
+  0%, 100% { 
+    box-shadow: 0 0 10px rgba(244, 63, 94, 0.5), 0 0 20px rgba(244, 63, 94, 0.3);
+  }
+  50% { 
+    box-shadow: 0 0 20px rgba(244, 63, 94, 0.8), 0 0 40px rgba(244, 63, 94, 0.6);
+  }
+}
+
+@keyframes ferris-rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Refined Carnival utility classes */
+@layer utilities {
+  /* Subtle marquee border */
+  .marquee-border {
+    position: relative;
+    border: 2px solid rgba(220, 38, 38, 0.3);
+    background:
+      repeating-linear-gradient(
+        0deg,
+        rgba(245, 158, 11, 0.2) 0px,
+        rgba(245, 158, 11, 0.2) 4px,
+        transparent 4px,
+        transparent 16px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        rgba(245, 158, 11, 0.2) 0px,
+        rgba(245, 158, 11, 0.2) 4px,
+        transparent 4px,
+        transparent 16px
+      );
+    background-size: 2px 100%, 100% 2px;
+    background-position: 0 0, 0 0;
+    background-repeat: repeat-y, repeat-x;
+  }
+
+  /* Refined striped awning effect */
+  .awning-stripes {
+    background: repeating-linear-gradient(
+      45deg,
+      rgba(220, 38, 38, 0.15),
+      rgba(220, 38, 38, 0.15) 20px,
+      rgba(255, 251, 235, 0.08) 20px,
+      rgba(255, 251, 235, 0.08) 40px
+    );
+  }
+
+  /* Carnival ticket perforation */
+  .ticket-perforated::before,
+  .ticket-perforated::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 8px;
+    background: 
+      radial-gradient(circle, transparent 3px, currentColor 3px);
+    background-size: 8px 16px;
+    background-position: 0 0;
+  }
+  
+  .ticket-perforated::before {
+    left: -4px;
+  }
+  
+  .ticket-perforated::after {
+    right: -4px;
+  }
+
+  /* Booth corner posts */
+  .booth-posts::before,
+  .booth-posts::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 8px;
+    height: 100%;
+    background: linear-gradient(180deg, #F43F5E 0%, #F59E0B 100%);
+    border-radius: 4px;
+  }
+  
+  .booth-posts::before {
+    left: 0;
+  }
+  
+  .booth-posts::after {
+    right: 0;
+  }
+
+  /* Dotted lights background */
+  .lights-pattern {
+    background-image: radial-gradient(circle, #FBBF24 2px, transparent 2px);
+    background-size: 24px 24px;
+  }
+
+  /* Refined carnival gradient text */
+  .carnival-text {
+    background: linear-gradient(135deg, #DC2626 0%, #F59E0B 50%, #DB2777 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-marquee-pulse,
+    .animate-tent-sway,
+    .animate-ticket-bounce,
+    .animate-lights-glow,
+    .animate-ferris-rotate,
+    .animate-float {
+      animation: none;
+    }
+  }
+}
+
+/* Animation utilities */
+.animate-marquee-pulse { animation: marquee-pulse 2s ease-in-out infinite; }
+.animate-tent-sway { animation: tent-sway 4s ease-in-out infinite; }
+.animate-ticket-bounce { animation: ticket-bounce 0.5s ease-in-out; }
+.animate-lights-glow { animation: lights-glow 2s ease-in-out infinite; }
+.animate-ferris-rotate { animation: ferris-rotate 20s linear infinite; }
+.animate-float { animation: float 6s ease-in-out infinite; }
+.animate-fade-in-up { animation: fade-in-up 0.6s ease-out; }
+.animate-shimmer { animation: shimmer 2s infinite; }
+
+/* Custom scrollbar - carnival themed */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--c-night);
+  border-left: 2px solid var(--c-marquee);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--c-marquee) 0%, var(--c-twist) 100%);
+  border-radius: 6px;
+  border: 2px solid var(--c-night);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--c-twist) 0%, var(--c-marquee) 100%);
+}
+
+/* Selection styling - carnival colors */
+::selection {
+  background: rgba(244, 63, 94, 0.3);
+  color: white;
+}
+
+/* Focus styles - ticket inspired */
+.focus-ring:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.5),
+              0 0 0 5px rgba(245, 158, 11, 0.3);
+}
+
+/* Glass morphism utilities */
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-strong {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.glass-neon {
+  background: rgba(52, 211, 153, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(52, 211, 153, 0.2);
+  box-shadow: 0 0 20px rgba(52, 211, 153, 0.1);
+}
+
+/* Gradient text utilities */
+.gradient-text-carnival {
+  background: linear-gradient(135deg, #F43F5E 0%, #F59E0B 50%, #EC4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-neon {
+  background: linear-gradient(135deg, #34D399 0%, #10B981 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-indigo {
+  background: linear-gradient(135deg, #4F46E5 0%, #8B5CF6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Spring transition utility */
+.transition-spring {
+  transition: all 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Smooth hover scale */
+.hover-scale {
+  transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+/* Glow on hover */
+.hover-glow:hover {
+  box-shadow: 0 0 20px rgba(244, 63, 94, 0.5), 0 0 40px rgba(244, 63, 94, 0.3);
+  transition: box-shadow 300ms ease;
+}
+
+.hover-glow-mint:hover {
+  box-shadow: 0 0 20px rgba(52, 211, 153, 0.5), 0 0 40px rgba(52, 211, 153, 0.3);
+  transition: box-shadow 300ms ease;
+}
+
+.hover-glow-violet:hover {
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.5), 0 0 40px rgba(139, 92, 246, 0.3);
+  transition: box-shadow 300ms ease;
+}
+
+/* Smooth transitions */
+* {
+  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Prevent transition on page load */
+.preload * {
+  transition: none !important;
+}
